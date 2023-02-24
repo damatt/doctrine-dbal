@@ -1047,6 +1047,7 @@ SQL
             'datetime'   => 'datetime',
             'decimal'    => 'decimal',
             'double'     => 'float',
+            'enum'       => 'string',
             'float'      => 'float',
             'int'        => 'integer',
             'integer'    => 'integer',
