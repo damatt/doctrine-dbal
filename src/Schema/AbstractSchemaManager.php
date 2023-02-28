@@ -297,12 +297,27 @@ abstract class AbstractSchemaManager
      *
      * @throws Exception
      */
-    public function listTables()
+    public function listTables(array $filters = [])
     {
         $tableNames = $this->listTableNames();
 
         $tables = [];
         foreach ($tableNames as $tableName) {
+            // If the filter array is not empty, and if the table name string does not start with any of the strings in the filter array, skip
+            if (!empty($filters)) {
+                $continue = false;
+                // Loop through the filters array to see if any of the filters matches the beginning of the table name
+                foreach ($filters as $filter) {
+                    if (!str_contains(strtolower($tableName), strtolower($filter))) {
+                        $continue = true;
+                        break;
+                    }
+                }
+
+                if ($continue) {
+                    continue;
+                }
+            }
             $tables[] = $this->listTableDetails($tableName);
         }
 
