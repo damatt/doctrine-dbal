@@ -308,7 +308,17 @@ abstract class AbstractSchemaManager
                 $continue = false;
                 // Loop through the filters array to see if any of the filters matches the beginning of the table name
                 foreach ($filters as $filter) {
-                    if (!str_contains(strtolower($tableName), strtolower($filter))) {
+                    if (!is_string($filter)) {
+                        continue; // Skip invalid filter
+                    }
+
+                    if (substr($filter, 0, 1) === '/') {
+                        $pattern = $filter;
+                    } else {
+                        $pattern = '/'. preg_quote($filter, '/') . '/i'; // Case-insensitive substring match
+                    }
+
+                    if (!preg_match($pattern, $tableName)) {
                         $continue = true;
                         break;
                     }
