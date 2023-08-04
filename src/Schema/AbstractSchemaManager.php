@@ -312,13 +312,13 @@ abstract class AbstractSchemaManager
                         continue; // Skip invalid filter
                     }
 
-                    if (substr($filter, 0, 1) === '/') {
+                    if (str_starts_with($filter, '/')) {
                         $pattern = $filter;
                     } else {
                         $pattern = '/'. preg_quote($filter, '/') . '/i'; // Case-insensitive substring match
                     }
 
-                    if (!preg_match($pattern, $tableName)) {
+                    if (preg_match($pattern, $tableName) !== 1) {
                         $continue = true;
                         break;
                     }
